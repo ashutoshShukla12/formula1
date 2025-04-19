@@ -2,329 +2,302 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-import { Car, Trophy, Award, Users, ArrowLeft } from "lucide-react"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Trophy, Award, ExternalLink } from "lucide-react"
+import Link from "next/link"
+import { Team } from "@/types/types"
 
-type Driver = {
-  name: string
-  number: number
-  nationality: string
-  image: string
-  championships: number
-  wins: number
-  podiums: number
-}
-
-type Team = {
-  id: string
-  name: string
-  logo: string
-  car: string
-  points: number
-  position: number
-  color: string
-  drivers: Driver[]
-  teamPrincipal: string
-  championships: number
-  firstEntry: number
-  headquarters: string
-  powerUnit: string
-  history: string
-  records: string[]
-  trophies: string[]
-}
 
 export default function TeamLayout({ team }: { team: Team }) {
   const [activeTab, setActiveTab] = useState("car")
 
+  // Function to parse trophy strings into title and years
+  const parseTrophy = (trophyString: string) => {
+    const [title, yearsString] = trophyString.split(": ")
+    const years = yearsString ? yearsString.split(", ") : []
+    return { title, years }
+  }
+
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-background">
-        {/* Navbar is now in the root layout */}
-
-        <div className="pt-16 flex">
-          <Sidebar variant="inset" collapsible="icon">
-            <SidebarHeader className="h-14 flex items-center px-4">
-              <Link href="/" className="flex items-center gap-2 text-sm">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Teams
-              </Link>
-            </SidebarHeader>
-            <SidebarContent>
-              <SidebarGroup>
-                <SidebarGroupLabel>Team Profile</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        isActive={activeTab === "car"}
-                        onClick={() => setActiveTab("car")}
-                        tooltip="Car"
-                      >
-                        <Car className="h-4 w-4" />
-                        <span>Car</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        isActive={activeTab === "drivers"}
-                        onClick={() => setActiveTab("drivers")}
-                        tooltip="Drivers"
-                      >
-                        <Users className="h-4 w-4" />
-                        <span>Drivers</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        isActive={activeTab === "trophies"}
-                        onClick={() => setActiveTab("trophies")}
-                        tooltip="Trophies"
-                      >
-                        <Trophy className="h-4 w-4" />
-                        <span>Trophies</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        isActive={activeTab === "records"}
-                        onClick={() => setActiveTab("records")}
-                        tooltip="Records"
-                      >
-                        <Award className="h-4 w-4" />
-                        <span>Records</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-          </Sidebar>
-
-          <div className="flex-1 p-6 md:p-8 lg:p-10">
-            <div className="mb-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: team.color }}
-                  >
-                    <span className="text-white font-bold text-xl">{team.position}</span>
-                  </div>
-                  <div>
-                    <h1 className="text-3xl md:text-4xl font-bold">{team.name}</h1>
-                    <p className="text-muted-foreground">
-                      {team.points} points • {team.championships} championships
-                    </p>
-                  </div>
+    <div className="min-h-screen max-w-screen w-full bg-background">
+      <div className="pt-16 flex">
+        <div className="flex-1 p-6 md:p-8 lg:p-10 max-w-screen">
+          <div className="mb-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: team.color }}
+                >
+                  <span className="text-white font-bold text-xl">{team.position}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm">
-                    Team Website
-                  </Button>
-                  <Button size="sm">Follow Team</Button>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold">{team.name}</h1>
+                  <p className="text-muted-foreground">
+                    {team.points} points • {team.championships} championships
+                  </p>
                 </div>
               </div>
+              <div className="flex items-center gap-2">
+                <Link href={team.teamUrl} target="_blank" rel="noopener noreferrer" passHref>
+                  <Button variant="outline" size="sm" className="flex items-center gap-1" asChild>
+                    <span>
+                      Team Website
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </span>
+                  </Button>
+                </Link>
+              </div>
             </div>
+          </div>
 
+          <div className="w-full">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="car">Car</TabsTrigger>
-                <TabsTrigger value="drivers">Drivers</TabsTrigger>
-                <TabsTrigger value="trophies">Trophies</TabsTrigger>
-                <TabsTrigger value="records">Records</TabsTrigger>
+              <TabsList className="flex w-full bg-zinc-900 rounded-lg p-1">
+                <TabsTrigger
+                  className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white"
+                  value="car"
+                >
+                  Car
+                </TabsTrigger>
+                <TabsTrigger
+                  className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white"
+                  value="drivers"
+                >
+                  Drivers
+                </TabsTrigger>
+                <TabsTrigger
+                  className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white"
+                  value="achievements"
+                >
+                  Achievements
+                </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="car" className="mt-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-8"
-                >
-                  <div className="relative rounded-xl overflow-hidden">
-                    <Image
-                      src={team.car || "/placeholder.svg"}
-                      alt={`${team.name} car`}
-                      width={1200}
-                      height={600}
-                      className="w-full object-cover aspect-[21/9]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                      <div className="p-6 w-full">
-                        <h2 className="text-white text-2xl font-bold">
-                          {new Date().getFullYear()} {team.name} Car
-                        </h2>
-                        <p className="text-white/80">Power Unit: {team.powerUnit}</p>
+              <div className="relative w-full min-w-full mt-6">
+                {activeTab === "car" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full space-y-8"
+                  >
+                    <div className="relative rounded-xl overflow-hidden w-full">
+                      <Image
+                        src={team.car || "/placeholder.svg"}
+                        alt={`${team.name} car`}
+                        width={1200}
+                        height={600}
+                        className="w-full object-cover aspect-[21/9]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div className="p-6 w-full">
+                          <h2 className="text-white text-2xl font-bold">
+                            {new Date().getFullYear()} {team.name} Car
+                          </h2>
+                          <p className="text-white/80">Power Unit: {team.powerUnit}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Card>
+                    <div className="flex flex-col md:flex-row gap-6 w-full">
+                      <Card className="flex-1">
+                        <CardHeader>
+                          <CardTitle>Team Principal</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-col items-center gap-3">
+                          {team.teamPrincipalImage ? (
+                            <div className="relative w-24 h-24 rounded-full overflow-hidden">
+                              <Image
+                                src={team.teamPrincipalImage || "/placeholder.svg"}
+                                alt={`${team.teamPrincipal}`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          ) : null}
+                          <p className="font-medium text-center">{team.teamPrincipal}</p>
+                        </CardContent>
+                      </Card>
+                      <Card className="flex-1 flex flex-col items-baseline justify-center gap-3">
+                        <CardHeader>
+                          <CardTitle>Headquarters</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p>{team.headquarters}</p>
+                        </CardContent>
+                      </Card>
+                      <Card className="flex-1 flex flex-col items-baseline justify-center gap-3">
+                        <CardHeader>
+                          <CardTitle>Debut</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p>{team.firstEntry}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card className="w-full">
                       <CardHeader>
-                        <CardTitle>Team Principal</CardTitle>
+                        <CardTitle>Team History</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p>{team.teamPrincipal}</p>
+                        <p>{team.history}</p>
                       </CardContent>
                     </Card>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Headquarters</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{team.headquarters}</p>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>First Entry</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{team.firstEntry}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  </motion.div>
+                )}
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Team History</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p>{team.history}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
+                {activeTab === "drivers" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-[60%] mx-auto flex flex-col md:flex-row flex-wrap gap-8"
+                  >
+                    {team.drivers.map((driver) => (
+                      <Card key={driver.name} className="overflow-hidden flex-1 min-w-[300px]">
+                        <div className="relative">
+                          <Image
+                            src={driver.image || "/placeholder.svg"}
+                            alt={driver.name}
+                            width={400}
+                            height={400}
+                            className="w-full max-h-[60vh] object-fit cover"
+                          />
+                          <div className="absolute top-0 right-0 bg-black/70 text-white font-bold text-3xl p-4 rounded-bl-lg">
+                            {driver.number}
+                          </div>
+                        </div>
+                        <CardHeader>
+                          <CardTitle className="flex justify-between items-center">
+                            <span>{driver.name}</span>
+                            <span className="text-sm font-normal text-muted-foreground">{driver.nationality}</span>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex justify-between gap-4 text-center">
+                            <div>
+                              <p className="text-2xl font-bold">{driver.championships}</p>
+                              <p className="text-xs text-muted-foreground">CHAMPIONSHIPS</p>
+                            </div>
+                            <div>
+                              <p className="text-2xl font-bold">{driver.wins}</p>
+                              <p className="text-xs text-muted-foreground">WINS</p>
+                            </div>
+                            <div>
+                              <p className="text-2xl font-bold">{driver.podiums}</p>
+                              <p className="text-xs text-muted-foreground">PODIUMS</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </motion.div>
+                )}
 
-              <TabsContent value="drivers" className="mt-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
-                >
-                  {team.drivers.map((driver) => (
-                    <Card key={driver.name} className="overflow-hidden">
-                      <div className="relative">
-                        <Image
-                          src={driver.image || "/placeholder.svg"}
-                          alt={driver.name}
-                          width={600}
-                          height={400}
-                          className="w-full h-64 object-cover"
-                        />
-                        <div className="absolute top-0 right-0 bg-black/70 text-white font-bold text-3xl p-4 rounded-bl-lg">
-                          {driver.number}
+                {activeTab === "achievements" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-zinc-900 rounded-lg p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Trophy className="h-6 w-6 text-yellow-500" />
+                          <h2 className="text-xl font-bold">Championships</h2>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 rounded-lg p-6">
+                          <div className="text-6xl font-bold mb-2" style={{ color: team.color }}>
+                            {team.championships}
+                          </div>
+                          <p className="text-gray-400">World Championships</p>
                         </div>
                       </div>
-                      <CardHeader>
-                        <CardTitle className="flex justify-between items-center">
-                          <span>{driver.name}</span>
-                          <span className="text-sm font-normal text-muted-foreground">{driver.nationality}</span>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-3 gap-4 text-center">
-                          <div>
-                            <p className="text-2xl font-bold">{driver.championships}</p>
-                            <p className="text-xs text-muted-foreground">CHAMPIONSHIPS</p>
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{driver.wins}</p>
-                            <p className="text-xs text-muted-foreground">WINS</p>
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{driver.podiums}</p>
-                            <p className="text-xs text-muted-foreground">PODIUMS</p>
-                          </div>
+
+                      <div className="bg-zinc-900 rounded-lg p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Award className="h-5 w-5 text-yellow-500" />
+                          <h2 className="text-xl font-bold">Team Records</h2>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </motion.div>
-              </TabsContent>
 
-              <TabsContent value="trophies" className="mt-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-6"
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Trophy className="h-5 w-5" />
-                        Championships and Major Trophies
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-4">
-                        {team.trophies.map((trophy, index) => (
-                          <li key={index} className="flex items-start gap-3">
-                            <div className="mt-1 h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                              <Trophy className="h-3 w-3 text-primary" />
-                            </div>
-                            <p>{trophy}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
+                        <ul className="space-y-3">
+                          {team.records.map((record, index) => (
+                            <li key={index} className="flex items-start gap-3 bg-zinc-800/50 rounded-lg p-3">
+                              <div
+                                className="mt-1 h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: `${team.color}20` }}
+                              >
+                                <Award className="h-3 w-3" style={{ color: team.color }} />
+                              </div>
+                              <p className="text-sm">{record}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
 
-              <TabsContent value="records" className="mt-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-6"
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Award className="h-5 w-5" />
-                        Team Records
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-4">
-                        {team.records.map((record, index) => (
-                          <li key={index} className="flex items-start gap-3">
-                            <div className="mt-1 h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                              <Award className="h-3 w-3 text-primary" />
+                    <div className="bg-zinc-900 rounded-lg p-6 mt-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Trophy className="h-6 w-6 text-yellow-500" />
+                        <h2 className="text-xl font-bold">Trophy Cabinet</h2>
+                      </div>
+
+                      <div className="space-y-6">
+                        {team.trophies.map((trophyString, index) => {
+                          const { title, years } = parseTrophy(trophyString)
+                          return (
+                            <div key={index} className="bg-zinc-800/50 rounded-lg p-4">
+                              <div className="flex flex-col md:flex-row">
+                                {/* Left column - Championship type */}
+                                <div className="md:w-1/3 flex items-start gap-3 pb-4 md:pb-0 md:pr-4 md:border-r md:border-zinc-700">
+                                  <div
+                                    className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                                    style={{ backgroundColor: `${team.color}20` }}
+                                  >
+                                    <Trophy className="h-4 w-4" style={{ color: team.color }} />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium">{title}</p>
+                                    <p className="text-gray-400 text-sm mt-1">{years.length} titles</p>
+                                  </div>
+                                </div>
+
+                                {/* Right column - Years */}
+                                <div className="md:w-2/3 md:pl-4">
+                                  <div className="flex flex-wrap gap-2">
+                                    {years.map((year, yearIndex) => (
+                                      <div
+                                        key={yearIndex}
+                                        className="px-3 py-2 rounded bg-zinc-700/50 hover:bg-zinc-700 transition-colors"
+                                      >
+                                        <span className="text-sm font-medium" style={{ color: team.color }}>
+                                          {year}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <p>{record}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
             </Tabs>
           </div>
         </div>
       </div>
-    </SidebarProvider>
+    </div>
+
   )
 }

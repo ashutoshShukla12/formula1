@@ -1,17 +1,25 @@
 "use client"
-
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import Link from "next/link" // Import Link for navigation
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { TypewriterEffect } from "./ui/typewriter-effect"
+import Image from "next/image"
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.7
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+
+    return () => {
+      window.removeEventListener("resize", checkMobile)
     }
   }, [])
 
@@ -26,14 +34,41 @@ export default function Hero() {
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full bg-black/40 z-10" />
-      <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-        <source src="/placeholder.svg?height=1080&width=1920" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <div className="absolute inset-0 w-full h-full bg-black/60 z-10" />
 
-      {/* Hero Content */}
+      {isMobile ? (
+        <Image
+          src="/mobile.png"
+          alt="Mobile Background"
+          layout="fill"
+          objectFit="cover"
+          priority
+        />
+      ) : (
+        <>
+          <div className="absolute inset-0 w-[68%] h-[80%] mx-auto my-auto rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              src="https://streamable.com/e/i9igpm?autoplay=1&muted=1"
+              allow="fullscreen;autoplay"
+              allowFullScreen
+              title="F1 Racing Video"
+              className="w-fit h-full"
+              style={{
+                border: "none",
+                position: "absolute",
+                left: 0,
+                top: 0,
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+                pointerEvents: "none",
+                background: "black",
+              }}
+            />
+          </div>
+        </>
+      )}
+
       <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -61,12 +96,16 @@ export default function Hero() {
             transition={{ delay: 1.5, duration: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white">
-              Latest Results
-            </Button>
-            <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
-              Watch Highlights
-            </Button>
+            <Link href="https://www.formula1.com/en/results/2025/races" passHref>
+              <Button size="lg" className="bg-transparent border hover:bg-red-700 text-white">
+                Latest Results
+              </Button>
+            </Link>
+            <Link href="https://www.formula1.com/en/video" passHref>
+              <Button size="lg" className="bg-transparent border hover:bg-red-700 text-white">
+                Watch Highligts
+              </Button>
+            </Link>
           </motion.div>
         </motion.div>
 

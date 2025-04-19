@@ -1,63 +1,16 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trophy, Users, Car, Award } from "lucide-react"
+import { teams } from "@/types/types" // Importing the teams array from your types file
 
-const teams = [
-  {
-    id: "red-bull",
-    name: "Red Bull Racing",
-    logo: "/placeholder.svg?height=100&width=200",
-    car: "/placeholder.svg?height=400&width=800",
-    points: 623,
-    position: 1,
-    color: "#0600EF",
-    drivers: ["Max Verstappen", "Sergio Perez"],
-    teamPrincipal: "Christian Horner",
-  },
-  {
-    id: "ferrari",
-    name: "Scuderia Ferrari",
-    logo: "/placeholder.svg?height=100&width=200",
-    car: "/placeholder.svg?height=400&width=800",
-    points: 496,
-    position: 2,
-    color: "#DC0000",
-    drivers: ["Charles Leclerc", "Carlos Sainz"],
-    teamPrincipal: "Frédéric Vasseur",
-  },
-  {
-    id: "mclaren",
-    name: "McLaren F1 Team",
-    logo: "/placeholder.svg?height=100&width=200",
-    car: "/placeholder.svg?height=400&width=800",
-    points: 487,
-    position: 3,
-    color: "#FF8700",
-    drivers: ["Lando Norris", "Oscar Piastri"],
-    teamPrincipal: "Andrea Stella",
-  },
-  {
-    id: "mercedes",
-    name: "Mercedes-AMG Petronas",
-    logo: "/placeholder.svg?height=100&width=200",
-    car: "/placeholder.svg?height=400&width=800",
-    points: 409,
-    position: 4,
-    color: "#00D2BE",
-    drivers: ["Lewis Hamilton", "George Russell"],
-    teamPrincipal: "Toto Wolff",
-  },
-]
 
 export default function TeamStandings() {
-  const [hoveredTeam, setHoveredTeam] = useState<string | null>(null)
+  // Removed unused hoveredTeam state
 
   return (
     <section id="teams" className="py-24 bg-gradient-to-b from-background to-background/95">
@@ -93,12 +46,11 @@ export default function TeamStandings() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
-              onHoverStart={() => setHoveredTeam(team.id)}
-              onHoverEnd={() => setHoveredTeam(null)}
+            // Removed unused hover logic
             >
               <Link href={`/teams/${team.id}`} className="block h-full">
                 <Card
-                  className="overflow-hidden h-full border-t-4 transition-all duration-300 hover:shadow-lg"
+                  className="overflow-hidden h-full border-t-4 transition-all bg-black/40 text-white duration-300 hover:shadow-lg"
                   style={{ borderTopColor: team.color }}
                 >
                   <CardContent className="p-0">
@@ -107,31 +59,13 @@ export default function TeamStandings() {
                         {team.position}
                       </div>
                       <Image
-                        src={team.car || "/placeholder.svg"}
+                        src={team.logo || "/placeholder.svg"}
                         alt={`${team.name} car`}
                         width={800}
                         height={400}
                         className="w-full h-48 object-cover"
                       />
-                      <div
-                        className={cn(
-                          "absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end transition-opacity duration-300",
-                          hoveredTeam === team.id ? "opacity-100" : "opacity-80",
-                        )}
-                      >
-                        <div className="p-4 w-full">
-                          <div className="flex justify-between items-end">
-                            <div>
-                              <h3 className="font-bold text-white text-xl">{team.name}</h3>
-                              <p className="text-white/80 text-sm">{team.drivers.join(" / ")}</p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-white font-bold text-2xl">{team.points}</p>
-                              <p className="text-white/80 text-xs">POINTS</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                     <div className="p-4">
                       <div className="flex justify-between items-center">
