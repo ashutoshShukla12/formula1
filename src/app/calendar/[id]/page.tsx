@@ -1,38 +1,36 @@
-import { notFound } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, Calendar, Clock, MapPin, Trophy } from "lucide-react"
-import Navbar from "@/components/navbar"
-import RaceSchedule from "@/components/calendar/race-schedule"
-import RaceResults from "@/components/calendar/race-results"
-import CircuitInfo from "@/components/calendar/circuit-info"
-import { formatDate } from "@/lib/utils"
-import type { Metadata } from "next"
-import type { Race } from "@/types/calendar"
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, Calendar, Clock, MapPin, Trophy } from "lucide-react";
+import Navbar from "@/components/navbar";
+import RaceSchedule from "@/components/calendar/race-schedule";
+import RaceResults from "@/components/calendar/race-results";
+import CircuitInfo from "@/components/calendar/circuit-info";
+import { formatDate } from "@/lib/utils";
+import type { Metadata } from "next";
+import type { Race } from "@/types/calendar";
 
 interface RacePageProps {
-    params: {
-        id: string
-    }
+    params: Promise<{ id: string }>; // Updated to reflect that params is a Promise
 }
 
 // Generate metadata for the race
 export async function generateMetadata({ params }: RacePageProps): Promise<Metadata> {
-    const { id } = params
+    const { id } = await params; // Unwrap the params promise
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar/${id}`, {
             cache: "no-store",
-        })
+        });
 
         if (!response.ok) {
             return {
                 title: "Race Not Found",
                 description: "The requested race could not be found.",
-            }
+            };
         }
 
-        const race: Race = await response.json()
+        const race: Race = await response.json();
 
         return {
             title: `${race.name} | F1 Calendar`,
@@ -40,28 +38,28 @@ export async function generateMetadata({ params }: RacePageProps): Promise<Metad
             openGraph: {
                 images: [race.circuitImage],
             },
-        }
+        };
     } catch (error) {
         return {
             title: "Race | F1 Calendar",
-            description: error instanceof Error ? error.message : "An error occurred while fetching .",
-        }
+            description: error instanceof Error ? error.message : "An error occurred while fetching.",
+        };
     }
 }
 
 export default async function RacePage({ params }: RacePageProps) {
-    const { id } = params
+    const { id } = await params; // Unwrap the params promise
 
     // Fetch the race data
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar/${id}`, {
         cache: "no-store",
-    })
+    });
 
     if (!response.ok) {
-        notFound()
+        notFound();
     }
 
-    const race: Race = await response.json()
+    const race: Race = await response.json();
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -158,5 +156,5 @@ export default async function RacePage({ params }: RacePageProps) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

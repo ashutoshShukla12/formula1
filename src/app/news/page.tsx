@@ -1,56 +1,57 @@
-import NewsHero from "@/components/news/news-hero"
-import NewsList from "@/components/news/news-list"
-import NewsFilters from "@/components/news/news-filters"
-import Navbar from "@/components/navbar"
-import type { Metadata } from "next"
+import NewsHero from "@/components/news/news-hero";
+import NewsList from "@/components/news/news-list";
+import NewsFilters from "@/components/news/news-filters";
+import Navbar from "@/components/navbar";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "F1 News | Latest Formula 1 Updates and Articles",
     description: "Stay up to date with the latest Formula 1 news, team updates, and driver information.",
-}
+};
 
 export default async function NewsPage({
     searchParams,
 }: {
-    searchParams: { page?: string; teamId?: string; tag?: string }
+    searchParams: Promise<{ page?: string; teamId?: string; tag?: string }>; // Updated to reflect that searchParams is a Promise
 }) {
-    const page = Number(searchParams.page) || 1
-    const teamId = searchParams.teamId
-    const tag = searchParams.tag
+    const unwrappedSearchParams = await searchParams; // Unwrap the searchParams promise
+    const page = Number(unwrappedSearchParams.page) || 1;
+    const teamId = unwrappedSearchParams.teamId;
+    const tag = unwrappedSearchParams.tag;
 
     // Fetch featured articles for the hero section
     const featuredResponse = await fetch(
         `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?featured=true&pageSize=3`,
-        { cache: "no-store" },
-    )
-    const featuredData = await featuredResponse.json()
-    const featuredArticles = featuredData.articles
+        { cache: "no-store" }
+    );
+    const featuredData = await featuredResponse.json();
+    const featuredArticles = featuredData.articles;
 
     // Fetch all articles with pagination and filters
-    let apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?page=${page}&pageSize=6`
+    let apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?page=${page}&pageSize=6`;
 
     if (teamId) {
-        apiUrl += `&teamId=${teamId}`
+        apiUrl += `&teamId=${teamId}`;
     }
 
     if (tag) {
-        apiUrl += `&tag=${tag}`
+        apiUrl += `&tag=${tag}`;
     }
 
-    const articlesResponse = await fetch(apiUrl, { cache: "no-store" })
-    const articlesData = await articlesResponse.json()
+    const articlesResponse = await fetch(apiUrl, { cache: "no-store" });
+    const articlesData = await articlesResponse.json();
 
     // Fetch all tags for filtering
     const tagsResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/tags`, {
         cache: "no-store",
-    })
-    const tagsData = await tagsResponse.json()
+    });
+    const tagsData = await tagsResponse.json();
 
     // Fetch all teams for filtering
     const teamsResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/teams`, {
         cache: "no-store",
-    })
-    const teams = await teamsResponse.json()
+    });
+    const teams = await teamsResponse.json();
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -79,5 +80,5 @@ export default async function NewsPage({
                 </div>
             </div>
         </div>
-    )
+    );
 }

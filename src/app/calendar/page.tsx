@@ -1,36 +1,36 @@
-import RaceList from "@/components/calendar/race-list"
-import NextRaceHighlight from "@/components/calendar/next-race-highlight"
-import CalendarFilters from "@/components/calendar/calendar-filters"
-import Navbar from "@/components/navbar"
-import type { Metadata } from "next"
+import RaceList from "@/components/calendar/race-list";
+import NextRaceHighlight from "@/components/calendar/next-race-highlight";
+import CalendarFilters from "@/components/calendar/calendar-filters";
+import Navbar from "@/components/navbar";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "F1 Race Calendar | Formula 1 Schedule",
     description: "View the complete Formula 1 race calendar with dates, times, and circuit information.",
-}
+};
 
 export default async function CalendarPage({
     searchParams,
 }: {
-    searchParams: { status?: string; season?: string }
+    searchParams: Promise<{ status?: string; season?: string }>; // Updated to reflect that searchParams is a Promise
 }) {
-    const status = searchParams.status || "all"
-    const season = searchParams.season ? Number(searchParams.season) : undefined
+    const unwrappedSearchParams = await searchParams; // Unwrap the searchParams promise
+    const status = unwrappedSearchParams.status || "all";
+    const season = unwrappedSearchParams.season ? Number(unwrappedSearchParams.season) : undefined;
 
     // Fetch calendar data
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar?status=${status}${season ? `&season=${season}` : ""
         }`,
-        { cache: "no-store" },
-    )
-    const calendarData = await response.json()
+        { cache: "no-store" }
+    );
+    const calendarData = await response.json();
 
     return (
         <div className="min-h-screen bg-black text-white">
             <Navbar />
 
             <div className="pt-20 pb-16">
-
                 {/* Next race highlight */}
                 {calendarData.nextRace && <NextRaceHighlight race={calendarData.nextRace} />}
 
@@ -49,5 +49,5 @@ export default async function CalendarPage({
                 </div>
             </div>
         </div>
-    )
+    );
 }

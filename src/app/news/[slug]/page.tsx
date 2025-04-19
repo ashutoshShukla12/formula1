@@ -1,36 +1,34 @@
-import { notFound } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
-import Navbar from "@/components/navbar"
-import RelatedArticles from "@/components/news/related-articles"
-import { formatDate } from "@/lib/utils"
-import type { Metadata } from "next"
-import type { NewsArticle } from "@/types/types"
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import Navbar from "@/components/navbar";
+import RelatedArticles from "@/components/news/related-articles";
+import { formatDate } from "@/lib/utils";
+import type { Metadata } from "next";
+import type { NewsArticle } from "@/types/types";
 
 interface ArticlePageProps {
-    params: {
-        slug: string
-    }
+    params: Promise<{ slug: string }>; // Updated to reflect that params is a Promise
 }
 
 // Generate metadata for the article
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-    const { slug } = params
+    const { slug } = await params; // Unwrap the params promise
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/${slug}`, {
             cache: "no-store",
-        })
+        });
 
         if (!response.ok) {
             return {
                 title: "Article Not Found",
                 description: "The requested article could not be found.",
-            }
+            };
         }
 
-        const article: NewsArticle = await response.json()
+        const article: NewsArticle = await response.json();
 
         return {
             title: `${article.title} | F1 News`,
@@ -38,39 +36,39 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
             openGraph: {
                 images: [article.coverImage],
             },
-        }
+        };
     } catch (error) {
         return {
             title: "Article | F1 News",
             description: error instanceof Error ? error.message : "An error occurred while fetching the article.",
-        }
+        };
     }
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-    const { slug } = params
+    const { slug } = await params; // Unwrap the params promise
 
     // Fetch the article data
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/${slug}`, {
         cache: "no-store",
-    })
+    });
 
     if (!response.ok) {
-        notFound()
+        notFound();
     }
 
-    const article: NewsArticle = await response.json()
+    const article: NewsArticle = await response.json();
 
     // Fetch related articles based on the same teams
-    const teamId = article.relatedTeams[0]
+    const teamId = article.relatedTeams[0];
     const relatedResponse = await fetch(
         `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?teamId=${teamId}&pageSize=3`,
         { cache: "no-store" },
-    )
-    const relatedData = await relatedResponse.json()
+    );
+    const relatedData = await relatedResponse.json();
 
     // Filter out the current article from related articles
-    const relatedArticles = relatedData.articles.filter((related: NewsArticle) => related.id !== article.id)
+    const relatedArticles = relatedData.articles.filter((related: NewsArticle) => related.id !== article.id);
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -172,5 +170,5 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 )}
             </div>
         </div>
-    )
+    );
 }

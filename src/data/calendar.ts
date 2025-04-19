@@ -1191,7 +1191,7 @@ export const races: Race[] = [
 // Update circuit image file extensions
 races.forEach((race) => {
   // Update circuit image extensions
-  if (race.id === "bahrain") race.circuitImage = "/tracks/bahrain.avif"
+  if (race.id === "bahrain") race.circuitImage = "/tracks/bahrain.png"
   if (race.id === "saudi-arabia") race.circuitImage = "/tracks/jeddah.avif"
   if (race.id === "australia") race.circuitImage = "/tracks/melbourne.avif"
   if (race.id === "japan") race.trackMap = "/circuits/suzuka.png"
@@ -1210,7 +1210,7 @@ races.forEach((race) => {
   if (race.id === "azerbaijan") race.trackMap = "/circuits/baku.avif"
 
   // Update track map extensions
-  if (race.id === "bahrain") race.trackMap = "/tracks/bahrain.png"
+  if (race.id === "bahrain") race.trackMap = "/circuits/bahrain.avif"
   if (race.id === "saudi-arabia") race.trackMap = "/circuits/jeddah.png"
   if (race.id === "australia") race.trackMap = "/circuits/melbourne.png"
   if (race.id === "japan") race.circuitImage = "/tracks/suzuka.avif"
