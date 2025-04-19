@@ -78,7 +78,7 @@ export const teams: Team[] = [
             },
         ],
         teamPrincipal: "Frédéric Vasseur",
-        teamPrincipalImage: "/principals/fred-vasseur.png",
+        teamPrincipalImage: "/principals/frederic-vasseur.png",
         championships: 16,
         firstEntry: 1950,
         headquarters: "Maranello, Italy",
