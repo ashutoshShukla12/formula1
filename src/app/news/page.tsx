@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import NewsHero from "@/components/news/news-hero";
 import NewsList from "@/components/news/news-list";
 import NewsFilters from "@/components/news/news-filters";

@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import Link from "next/link"
 import { Flag } from "lucide-react"
 import Navbar from "@/components/navbar"

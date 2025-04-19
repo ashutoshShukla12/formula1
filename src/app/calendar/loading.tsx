@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Siva kumar Reddy Chinchala
+- Student Number - 8948646
+*/
 import { Loader2 } from "lucide-react"
 import Navbar from "@/components/navbar"
 

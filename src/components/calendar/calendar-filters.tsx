@@ -1,5 +1,8 @@
 "use client"
-
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import type React from "react"
 
 import { useState } from "react"
@@ -89,11 +92,10 @@ export default function CalendarFilters({ selectedStatus, selectedSeason }: Cale
               <Link
                 key={status.value}
                 href={`/calendar?status=${status.value}${selectedSeason ? `&season=${selectedSeason}` : ""}`}
-                className={`block px-3 py-2 rounded-md transition-colors ${
-                  selectedStatus === status.value
+                className={`block px-3 py-2 rounded-md transition-colors ${selectedStatus === status.value
                     ? "bg-red-600 text-white"
                     : "bg-zinc-800 hover:bg-zinc-700 text-gray-300"
-                }`}
+                  }`}
               >
                 {status.label}
               </Link>

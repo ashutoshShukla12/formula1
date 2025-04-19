@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar } from "lucide-react"

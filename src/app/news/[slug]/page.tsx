@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";

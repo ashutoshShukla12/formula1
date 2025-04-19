@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import type { Race } from "@/types/calendar"
 
 interface RaceResultsProps {

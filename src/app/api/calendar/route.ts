@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by DilpreetKaur Dhanjal
+Student Number - 8669553
+*/
 import { getCalendarData } from "@/data/calendar"
 import { type NextRequest, NextResponse } from "next/server"
 

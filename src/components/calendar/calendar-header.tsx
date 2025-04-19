@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 export default function CalendarHeader({ season }: { season: number }) {
   return (
     <div className="bg-zinc-900 py-12">

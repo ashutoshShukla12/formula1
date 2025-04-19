@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar, Clock, ChevronRight } from "lucide-react"
@@ -68,15 +72,14 @@ export default function RaceList({ races }: RaceListProps) {
 
                           {/* Status badge */}
                           <span
-                            className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
-                              race.status === "upcoming"
+                            className={`ml-auto text-xs px-2 py-0.5 rounded-full ${race.status === "upcoming"
                                 ? "bg-blue-600/20 text-blue-400"
                                 : race.status === "completed"
                                   ? "bg-green-600/20 text-green-400"
                                   : race.status === "ongoing"
                                     ? "bg-yellow-600/20 text-yellow-400"
                                     : "bg-red-600/20 text-red-400"
-                            }`}
+                              }`}
                           >
                             {race.status.charAt(0).toUpperCase() + race.status.slice(1)}
                           </span>

@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by DilpreetKaur Dhanjal
+Student Number - 8669553
+*/
 import { newsArticles } from "@/data/news"
 import { NextResponse } from "next/server"
 

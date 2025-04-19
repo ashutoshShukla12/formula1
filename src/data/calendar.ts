@@ -1,3 +1,8 @@
+/*
+Made with ❤️ by DilpreetKaur Dhanjal
+Student Number - 8669553
+*/
+
 import type { Race, CalendarResponse } from "@/types/calendar"
 
 export const races: Race[] = [

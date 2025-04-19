@@ -1,4 +1,8 @@
 "use client"
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 

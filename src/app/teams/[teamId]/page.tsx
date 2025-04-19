@@ -1,4 +1,8 @@
 'use client'
+/*
+Made with ❤️ by Siva kumar Reddy Chinchala
+- Student Number - 8948646
+*/
 import { notFound } from "next/navigation"
 import TeamLayout from "@/components/team-layout"
 import { Team } from "@/types/types" // Importing the Team type

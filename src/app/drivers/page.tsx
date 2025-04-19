@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import DriversGrid from "@/components/drivers/drivers-grid"
 import Navbar from "@/components/navbar"
 import type { Metadata } from "next"

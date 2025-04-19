@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by DilpreetKaur Dhanjal
+Student Number - 8669553
+*/
 import type { NewsArticle } from "@/types/types"
 
 export const newsArticles: NewsArticle[] = [

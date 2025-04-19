@@ -1,5 +1,8 @@
 "use client"
-
+/*
+Made with ❤️ by Siva kumar Reddy Chinchala
+- Student Number - 8948646
+*/
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"

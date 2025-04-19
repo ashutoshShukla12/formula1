@@ -1,5 +1,8 @@
 "use client"
-
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Menu, X, ChevronDown } from "lucide-react"

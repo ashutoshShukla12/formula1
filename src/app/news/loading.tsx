@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import { Loader2 } from "lucide-react"
 import Navbar from "@/components/navbar"
 

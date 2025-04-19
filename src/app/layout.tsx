@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import type React from "react"
 import type { Metadata } from "next/types"
 import { Inter } from "next/font/google"

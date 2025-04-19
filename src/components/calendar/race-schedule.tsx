@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import { Calendar, Clock } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import type { Race } from "@/types/calendar"
@@ -56,9 +60,8 @@ export default function RaceSchedule({ race }: RaceScheduleProps) {
           return (
             <div
               key={index}
-              className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg ${
-                isRace ? "bg-red-900/30 border border-red-900/50" : "bg-zinc-800"
-              } ${isPast ? "opacity-70" : ""}`}
+              className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg ${isRace ? "bg-red-900/30 border border-red-900/50" : "bg-zinc-800"
+                } ${isPast ? "opacity-70" : ""}`}
             >
               <div className="mb-2 sm:mb-0">
                 <h3 className={`font-bold ${isRace ? "text-lg" : ""}`}>{item.type}</h3>
@@ -76,15 +79,14 @@ export default function RaceSchedule({ race }: RaceScheduleProps) {
 
               <div className="mt-2 sm:mt-0">
                 <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                    isPast
+                  className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${isPast
                       ? "bg-gray-600"
                       : isRace
                         ? "bg-red-600"
                         : item.type === "Qualifying" || item.type === "Sprint"
                           ? "bg-yellow-600"
                           : "bg-blue-600"
-                  }`}
+                    }`}
                 >
                   {isPast ? "Completed" : "Upcoming"}
                 </span>

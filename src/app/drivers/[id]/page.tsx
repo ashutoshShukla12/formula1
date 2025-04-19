@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Shreyash Raj 
+- Student Number - 8971835
+*/
 import { notFound } from "next/navigation";
 import DriverProfile from "@/components/drivers/driver-profile";
 import Navbar from "@/components/navbar";

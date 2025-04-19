@@ -1,5 +1,8 @@
 "use client"
-
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import { useState } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"

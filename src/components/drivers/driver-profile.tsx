@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Calendar, Flag, Instagram, Facebook, Twitter, Globe } from "lucide-react"
@@ -126,53 +130,53 @@ export default function DriverProfile({ driver }: DriverProfileProps) {
                 driver.socialMedia.instagram ||
                 driver.socialMedia.facebook ||
                 driver.socialMedia.website) && (
-                <div className="flex gap-3">
-                  {driver.socialMedia.twitter && (
-                    <a
-                      href={driver.socialMedia.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
-                      aria-label={`${driver.name}'s Twitter`}
-                    >
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                  )}
-                  {driver.socialMedia.instagram && (
-                    <a
-                      href={driver.socialMedia.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
-                      aria-label={`${driver.name}'s Instagram`}
-                    >
-                      <Instagram className="w-5 h-5" />
-                    </a>
-                  )}
-                  {driver.socialMedia.facebook && (
-                    <a
-                      href={driver.socialMedia.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
-                      aria-label={`${driver.name}'s Facebook`}
-                    >
-                      <Facebook className="w-5 h-5" />
-                    </a>
-                  )}
-                  {driver.socialMedia.website && (
-                    <a
-                      href={driver.socialMedia.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
-                      aria-label={`${driver.name}'s Website`}
-                    >
-                      <Globe className="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
-              )}
+                  <div className="flex gap-3">
+                    {driver.socialMedia.twitter && (
+                      <a
+                        href={driver.socialMedia.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
+                        aria-label={`${driver.name}'s Twitter`}
+                      >
+                        <Twitter className="w-5 h-5" />
+                      </a>
+                    )}
+                    {driver.socialMedia.instagram && (
+                      <a
+                        href={driver.socialMedia.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
+                        aria-label={`${driver.name}'s Instagram`}
+                      >
+                        <Instagram className="w-5 h-5" />
+                      </a>
+                    )}
+                    {driver.socialMedia.facebook && (
+                      <a
+                        href={driver.socialMedia.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
+                        aria-label={`${driver.name}'s Facebook`}
+                      >
+                        <Facebook className="w-5 h-5" />
+                      </a>
+                    )}
+                    {driver.socialMedia.website && (
+                      <a
+                        href={driver.socialMedia.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors"
+                        aria-label={`${driver.name}'s Website`}
+                      >
+                        <Globe className="w-5 h-5" />
+                      </a>
+                    )}
+                  </div>
+                )}
             </div>
           </div>
         </div>

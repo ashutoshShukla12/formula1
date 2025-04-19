@@ -1,4 +1,8 @@
 "use client"
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link" // Import Link for navigation

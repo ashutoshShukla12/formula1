@@ -1,3 +1,7 @@
+/*
+Made with ❤️ by Ashutosh Shukla
+Student Number - 8960611 
+*/
 import Image from "next/image"
 import { Trophy, Timer, Ruler } from "lucide-react"
 import type { Race } from "@/types/calendar"
