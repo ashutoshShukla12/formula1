@@ -17,6 +17,7 @@ export default async function CalendarPage({
     const unwrappedSearchParams = await searchParams; // Unwrap the searchParams promise
     const status = unwrappedSearchParams.status || "all";
     const season = unwrappedSearchParams.season ? Number(unwrappedSearchParams.season) : undefined;
+    
 
     // Fetch calendar data
     const response = await fetch(
