@@ -25,7 +25,7 @@ export default async function CalendarPage({
 
     // Fetch calendar data
     const response = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar?status=${status}${season ? `&season=${season}` : ""
+        `/api/calendar?status=${status}${season ? `&season=${season}` : ""
         }`,
         { cache: "no-store" }
     );

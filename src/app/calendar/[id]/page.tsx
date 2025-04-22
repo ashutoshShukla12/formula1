@@ -23,9 +23,7 @@ export async function generateMetadata({ params }: RacePageProps): Promise<Metad
     const { id } = await params; // Unwrap the params promise
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar/${id}`, {
-            cache: "no-store",
-        });
+        const response = await fetch(`/api/calendar/${id}`);
 
         if (!response.ok) {
             return {
@@ -55,7 +53,7 @@ export default async function RacePage({ params }: RacePageProps) {
     const { id } = await params; // Unwrap the params promise
 
     // Fetch the race data
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar/${id}`, {
+    const response = await fetch(`/api/calendar/${id}`, {
         cache: "no-store",
     });
 

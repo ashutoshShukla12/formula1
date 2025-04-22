@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: DriverPageProps): Promise<Met
     const { id } = await params; // Unwrap the params promise
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/drivers/${id}`, {
+        const response = await fetch(`/api/drivers/${id}`, {
             cache: "no-store",
         });
 
@@ -49,7 +49,7 @@ export default async function DriverPage({ params }: DriverPageProps) {
     const { id } = await params; // Unwrap the params promise
 
     // Fetch the driver data
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/drivers/${id}`, {
+    const response = await fetch(`/api/drivers/${id}`, {
         cache: "no-store",
     });
 

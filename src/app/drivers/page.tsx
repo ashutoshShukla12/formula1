@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function DriversPage() {
     // Fetch drivers data
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/drivers`, {
+    const response = await fetch(`/api/drivers`, {
         cache: "no-store",
     })
     const data = await response.json()

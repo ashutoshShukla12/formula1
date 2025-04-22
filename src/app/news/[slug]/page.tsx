@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     const { slug } = await params; // Unwrap the params promise
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/${slug}`, {
+        const response = await fetch(`/api/news/${slug}`, {
             cache: "no-store",
         });
 
@@ -53,7 +53,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     const { slug } = await params; // Unwrap the params promise
 
     // Fetch the article data
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/${slug}`, {
+    const response = await fetch(`/api/news/${slug}`, {
         cache: "no-store",
     });
 
@@ -66,7 +66,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     // Fetch related articles based on the same teams
     const teamId = article.relatedTeams[0];
     const relatedResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?teamId=${teamId}&pageSize=3`,
+        `/api/news?teamId=${teamId}&pageSize=3`,
         { cache: "no-store" },
     );
     const relatedData = await relatedResponse.json();

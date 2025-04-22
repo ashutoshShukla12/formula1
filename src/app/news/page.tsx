@@ -25,14 +25,14 @@ export default async function NewsPage({
 
     // Fetch featured articles for the hero section
     const featuredResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?featured=true&pageSize=3`,
+        `/api/news?featured=true&pageSize=3`,
         { cache: "no-store" }
     );
     const featuredData = await featuredResponse.json();
     const featuredArticles = featuredData.articles;
 
     // Fetch all articles with pagination and filters
-    let apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news?page=${page}&pageSize=6`;
+    let apiUrl = `/api/news?page=${page}&pageSize=6`;
 
     if (teamId) {
         apiUrl += `&teamId=${teamId}`;
@@ -46,13 +46,13 @@ export default async function NewsPage({
     const articlesData = await articlesResponse.json();
 
     // Fetch all tags for filtering
-    const tagsResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/news/tags`, {
+    const tagsResponse = await fetch(`/api/news/tags`, {
         cache: "no-store",
     });
     const tagsData = await tagsResponse.json();
 
     // Fetch all teams for filtering
-    const teamsResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/teams`, {
+    const teamsResponse = await fetch(`/api/teams`, {
         cache: "no-store",
     });
     const teams = await teamsResponse.json();
