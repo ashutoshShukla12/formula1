@@ -9,15 +9,16 @@ import type { Metadata } from "next";
 import type { Driver } from "@/types/drivers";
 
 interface DriverPageProps {
-    params: Promise<{ id: string }>; // Updated to reflect that params is a Promise
+    params: { id: string }; // Corrected: params is not a Promise
 }
 
 // Generate metadata for the driver
 export async function generateMetadata({ params }: DriverPageProps): Promise<Metadata> {
-    const { id } = await params; // Unwrap the params promise
+    const { id } = params;
 
     try {
-        const response = await fetch(`/api/drivers/${id}`, {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use environment variable or fallback
+        const response = await fetch(`${baseUrl}/api/drivers/${id}`, {
             cache: "no-store",
         });
 
@@ -46,10 +47,11 @@ export async function generateMetadata({ params }: DriverPageProps): Promise<Met
 }
 
 export default async function DriverPage({ params }: DriverPageProps) {
-    const { id } = await params; // Unwrap the params promise
+    const { id } = params;
 
     // Fetch the driver data
-    const response = await fetch(`/api/drivers/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use environment variable or fallback
+    const response = await fetch(`${baseUrl}/api/drivers/${id}`, {
         cache: "no-store",
     });
 

@@ -13,15 +13,16 @@ import type { Metadata } from "next";
 import type { NewsArticle } from "@/types/types";
 
 interface ArticlePageProps {
-    params: Promise<{ slug: string }>; // Updated to reflect that params is a Promise
+    params: { slug: string }; // Corrected: params is not a Promise
 }
 
 // Generate metadata for the article
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-    const { slug } = await params; // Unwrap the params promise
+    const { slug } = params;
 
     try {
-        const response = await fetch(`/api/news/${slug}`, {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+        const response = await fetch(`${baseUrl}/api/news/${slug}`, {
             cache: "no-store",
         });
 
@@ -50,10 +51,11 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-    const { slug } = await params; // Unwrap the params promise
+    const { slug } = params;
 
     // Fetch the article data
-    const response = await fetch(`/api/news/${slug}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+    const response = await fetch(`${baseUrl}/api/news/${slug}`, {
         cache: "no-store",
     });
 
@@ -66,8 +68,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     // Fetch related articles based on the same teams
     const teamId = article.relatedTeams[0];
     const relatedResponse = await fetch(
-        `/api/news?teamId=${teamId}&pageSize=3`,
-        { cache: "no-store" },
+        `${baseUrl}/api/news?teamId=${teamId}&pageSize=3`,
+        { cache: "no-store" }
     );
     const relatedData = await relatedResponse.json();
 

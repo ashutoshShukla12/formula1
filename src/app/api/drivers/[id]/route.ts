@@ -6,7 +6,7 @@ import { drivers } from "@/data/drivers"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const unwrappedParams = await params; // Unwrap the params promise
+    const unwrappedParams = await params;
     const driver = drivers.find((driver) => driver.id === unwrappedParams.id);
 
     if (!driver) {

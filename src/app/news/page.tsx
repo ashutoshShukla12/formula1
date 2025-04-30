@@ -16,23 +16,24 @@ export const metadata: Metadata = {
 export default async function NewsPage({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string; teamId?: string; tag?: string }>; // Updated to reflect that searchParams is a Promise
+    searchParams: { page?: string; teamId?: string; tag?: string }; // Corrected: searchParams is not a Promise
 }) {
-    const unwrappedSearchParams = await searchParams; // Unwrap the searchParams promise
-    const page = Number(unwrappedSearchParams.page) || 1;
-    const teamId = unwrappedSearchParams.teamId;
-    const tag = unwrappedSearchParams.tag;
+    const page = Number(searchParams.page) || 1;
+    const teamId = searchParams.teamId;
+    const tag = searchParams.tag;
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
 
     // Fetch featured articles for the hero section
     const featuredResponse = await fetch(
-        `/api/news?featured=true&pageSize=3`,
+        `${baseUrl}/api/news?featured=true&pageSize=3`,
         { cache: "no-store" }
     );
     const featuredData = await featuredResponse.json();
     const featuredArticles = featuredData.articles;
 
     // Fetch all articles with pagination and filters
-    let apiUrl = `/api/news?page=${page}&pageSize=6`;
+    let apiUrl = `${baseUrl}/api/news?page=${page}&pageSize=6`;
 
     if (teamId) {
         apiUrl += `&teamId=${teamId}`;
@@ -46,13 +47,13 @@ export default async function NewsPage({
     const articlesData = await articlesResponse.json();
 
     // Fetch all tags for filtering
-    const tagsResponse = await fetch(`/api/news/tags`, {
+    const tagsResponse = await fetch(`${baseUrl}/api/news/tags`, {
         cache: "no-store",
     });
     const tagsData = await tagsResponse.json();
 
     // Fetch all teams for filtering
-    const teamsResponse = await fetch(`/api/teams`, {
+    const teamsResponse = await fetch(`${baseUrl}/api/teams`, {
         cache: "no-store",
     });
     const teams = await teamsResponse.json();
@@ -69,7 +70,12 @@ export default async function NewsPage({
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* Sidebar with filters */}
                         <div className="lg:w-1/4">
-                            <NewsFilters tags={tagsData.tags} teams={teams} selectedTeam={teamId} selectedTag={tag} />
+                            <NewsFilters
+                                tags={tagsData.tags}
+                                teams={teams}
+                                selectedTeam={teamId}
+                                selectedTag={tag}
+                            />
                         </div>
 
                         {/* Main content with article list */}

@@ -15,15 +15,16 @@ import type { Metadata } from "next";
 import type { Race } from "@/types/calendar";
 
 interface RacePageProps {
-    params: Promise<{ id: string }>; // Updated to reflect that params is a Promise
+    params: { id: string }; // Corrected: params is not a Promise
 }
 
 // Generate metadata for the race
 export async function generateMetadata({ params }: RacePageProps): Promise<Metadata> {
-    const { id } = await params; // Unwrap the params promise
+    const { id } = params;
 
     try {
-        const response = await fetch(`/api/calendar/${id}`);
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+        const response = await fetch(`${baseUrl}/api/calendar/${id}`);
 
         if (!response.ok) {
             return {
@@ -50,10 +51,11 @@ export async function generateMetadata({ params }: RacePageProps): Promise<Metad
 }
 
 export default async function RacePage({ params }: RacePageProps) {
-    const { id } = await params; // Unwrap the params promise
+    const { id } = params;
 
     // Fetch the race data
-    const response = await fetch(`/api/calendar/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+    const response = await fetch(`${baseUrl}/api/calendar/${id}`, {
         cache: "no-store",
     });
 
