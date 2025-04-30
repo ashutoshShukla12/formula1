@@ -16,12 +16,20 @@ interface ArticlePageProps {
     params: Promise<{ slug: string }> // Updated: params is a Promise in Next.js 15
 }
 
+// Helper function to create absolute URLs
+function getApiUrl(path: string): string {
+    // Check if we're in development or production
+    const isDevelopment = process.env.NODE_ENV === "development"
+    const baseUrl = isDevelopment ? "http://localhost:3000" : "https://www.f1geeks.fyi"
+    return `${baseUrl}${path}`
+}
+
 // Generate metadata for the article
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params
 
     try {
-        const response = await fetch(`/api/news/${slug}`, {
+        const response = await fetch(getApiUrl(`/api/news/${slug}`), {
             cache: "no-store",
         })
 
@@ -53,7 +61,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     const { slug } = await params
 
     // Fetch the article data
-    const response = await fetch(`/api/news/${slug}`, {
+    const response = await fetch(getApiUrl(`/api/news/${slug}`), {
         cache: "no-store",
     })
 
@@ -65,7 +73,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
     // Fetch related articles based on the same teams
     const teamId = article.relatedTeams[0]
-    const relatedResponse = await fetch(`/api/news?teamId=${teamId}&pageSize=3`, { cache: "no-store" })
+    const relatedResponse = await fetch(getApiUrl(`/api/news?teamId=${teamId}&pageSize=3`), { cache: "no-store" })
     const relatedData = await relatedResponse.json()
 
     // Filter out the current article from related articles
