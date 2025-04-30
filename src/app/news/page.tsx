@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     description: "Stay up to date with the latest Formula 1 news, team updates, and driver information.",
 }
 
+// Helper function to create absolute URLs
+function getApiUrl(path: string): string {
+    // Check if we're in development or production
+    const isDevelopment = process.env.NODE_ENV === "development"
+    const baseUrl = isDevelopment ? "http://localhost:3000" : "https://www.f1geeks.fyi"
+    return `${baseUrl}${path}`
+}
+
 export default async function NewsPage({
     searchParams,
 }: {
@@ -23,34 +31,33 @@ export default async function NewsPage({
     const teamId = params.teamId
     const tag = params.tag
 
-
     // Fetch featured articles for the hero section
-    const featuredResponse = await fetch(`/api/news?featured=true&pageSize=3`, { cache: "no-store" })
+    const featuredResponse = await fetch(getApiUrl(`/api/news?featured=true&pageSize=3`), { cache: "no-store" })
     const featuredData = await featuredResponse.json()
     const featuredArticles = featuredData.articles
 
     // Fetch all articles with pagination and filters
-    let apiUrl = `/api/news?page=${page}&pageSize=6`
+    let apiPath = `/api/news?page=${page}&pageSize=6`
 
     if (teamId) {
-        apiUrl += `&teamId=${teamId}`
+        apiPath += `&teamId=${teamId}`
     }
 
     if (tag) {
-        apiUrl += `&tag=${tag}`
+        apiPath += `&tag=${tag}`
     }
 
-    const articlesResponse = await fetch(apiUrl, { cache: "no-store" })
+    const articlesResponse = await fetch(getApiUrl(apiPath), { cache: "no-store" })
     const articlesData = await articlesResponse.json()
 
     // Fetch all tags for filtering
-    const tagsResponse = await fetch(`/api/news/tags`, {
+    const tagsResponse = await fetch(getApiUrl(`/api/news/tags`), {
         cache: "no-store",
     })
     const tagsData = await tagsResponse.json()
 
     // Fetch all teams for filtering
-    const teamsResponse = await fetch(`/api/teams`, {
+    const teamsResponse = await fetch(getApiUrl(`/api/teams`), {
         cache: "no-store",
     })
     const teams = await teamsResponse.json()
