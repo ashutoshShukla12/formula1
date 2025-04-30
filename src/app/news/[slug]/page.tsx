@@ -54,7 +54,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     const { slug } = params;
 
     // Fetch the article data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
     const response = await fetch(`${baseUrl}/api/news/${slug}`, {
         cache: "no-store",
     });

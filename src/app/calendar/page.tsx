@@ -20,7 +20,7 @@ export default function CalendarPage() {
     useEffect(() => {
         const fetchCalendarData = async () => {
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                 const response = await fetch(
                     `${baseUrl}/api/calendar?status=${status}${season ? `&season=${season}` : ""}`,
                     { cache: "no-store" }

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: DriverPageProps): Promise<Met
     const { id } = params;
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use environment variable or fallback
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use environment variable or fallback
         const response = await fetch(`${baseUrl}/api/drivers/${id}`, {
             cache: "no-store",
         });

@@ -54,7 +54,7 @@ export default async function RacePage({ params }: RacePageProps) {
     const { id } = params;
 
     // Fetch the race data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
     const response = await fetch(`${baseUrl}/api/calendar/${id}`, {
         cache: "no-store",
     });

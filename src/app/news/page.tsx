@@ -22,7 +22,7 @@ export default async function NewsPage({
     const teamId = searchParams.teamId;
     const tag = searchParams.tag;
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
 
     // Fetch featured articles for the hero section
     const featuredResponse = await fetch(
