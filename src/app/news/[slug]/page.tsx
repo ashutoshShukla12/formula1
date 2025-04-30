@@ -21,8 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" // Use absolute URL with fallback
-        const response = await fetch(`${baseUrl}/api/news/${slug}`, {
+        const response = await fetch(`/api/news/${slug}`, {
             cache: "no-store",
         })
 
@@ -54,8 +53,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     const { slug } = await params
 
     // Fetch the article data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" // Use absolute URL with fallback
-    const response = await fetch(`${baseUrl}/api/news/${slug}`, {
+    const response = await fetch(`/api/news/${slug}`, {
         cache: "no-store",
     })
 
@@ -67,7 +65,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
     // Fetch related articles based on the same teams
     const teamId = article.relatedTeams[0]
-    const relatedResponse = await fetch(`${baseUrl}/api/news?teamId=${teamId}&pageSize=3`, { cache: "no-store" })
+    const relatedResponse = await fetch(`/api/news?teamId=${teamId}&pageSize=3`, { cache: "no-store" })
     const relatedData = await relatedResponse.json()
 
     // Filter out the current article from related articles

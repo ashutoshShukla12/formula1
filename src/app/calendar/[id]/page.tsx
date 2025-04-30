@@ -18,8 +18,7 @@ export default async function RacePage({ params }: RacePageProps) {
     const { id } = await params
 
     // Fetch the race data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL // Use absolute URL
-    const response = await fetch(`${baseUrl}/api/calendar/${id}`, {
+    const response = await fetch(`/api/calendar/${id}`, {
         cache: "no-store",
     })
 
