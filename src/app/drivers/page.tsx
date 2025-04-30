@@ -18,8 +18,7 @@ export default function DriversPage() {
     useEffect(() => {
         const fetchDrivers = async () => {
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-                const response = await fetch(`${baseUrl}/api/drivers`);
+                const response = await fetch(`/api/drivers`);
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch drivers");
