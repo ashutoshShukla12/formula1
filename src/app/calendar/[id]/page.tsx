@@ -1,69 +1,33 @@
-/*
-Made with ❤️ by Siva kumar Reddy Chinchala
-- Student Number - 8948646
-*/
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, MapPin, Trophy } from "lucide-react";
-import Navbar from "@/components/navbar";
-import RaceSchedule from "@/components/calendar/race-schedule";
-import RaceResults from "@/components/calendar/race-results";
-import CircuitInfo from "@/components/calendar/circuit-info";
-import { formatDate } from "@/lib/utils";
-import type { Metadata } from "next";
-import type { Race } from "@/types/calendar";
+import { notFound } from "next/navigation"
+import Image from "next/image"
+import Link from "next/link"
+import { ArrowLeft, Calendar, Clock, MapPin, Trophy } from "lucide-react"
+import Navbar from "@/components/navbar"
+import RaceSchedule from "@/components/calendar/race-schedule"
+import RaceResults from "@/components/calendar/race-results"
+import CircuitInfo from "@/components/calendar/circuit-info"
+import { formatDate } from "@/lib/utils"
+import type { Race } from "@/types/calendar"
 
 interface RacePageProps {
-    params: { id: string }; // Corrected: params is not a Promise
+    params: Promise<{ id: string }>
 }
 
-// Generate metadata for the race
-export async function generateMetadata({ params }: RacePageProps): Promise<Metadata> {
-    const { id } = params;
-
-    try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
-        const response = await fetch(`${baseUrl}/api/calendar/${id}`);
-
-        if (!response.ok) {
-            return {
-                title: "Race Not Found",
-                description: "The requested race could not be found.",
-            };
-        }
-
-        const race: Race = await response.json();
-
-        return {
-            title: `${race.name} | F1 Calendar`,
-            description: `Information about the ${race.name} at ${race.circuitName}, including schedule, results, and circuit details.`,
-            openGraph: {
-                images: [race.circuitImage],
-            },
-        };
-    } catch (error) {
-        return {
-            title: "Race | F1 Calendar",
-            description: error instanceof Error ? error.message : "An error occurred while fetching.",
-        };
-    }
-}
 
 export default async function RacePage({ params }: RacePageProps) {
-    const { id } = params;
+    const { id } = await params
 
     // Fetch the race data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL // Use absolute URL
     const response = await fetch(`${baseUrl}/api/calendar/${id}`, {
         cache: "no-store",
-    });
+    })
 
     if (!response.ok) {
-        notFound();
+        notFound()
     }
 
-    const race: Race = await response.json();
+    const race: Race = await response.json()
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -82,7 +46,7 @@ export default async function RacePage({ params }: RacePageProps) {
                 <div className="relative rounded-xl overflow-hidden mb-10">
                     <div className="relative h-[40vh] md:h-[60vh]">
                         <Image
-                            src={race.circuitImage || "/placeholder.svg?height=600&width=1200"}
+                            src={race.circuitImage || "/placeholder.svg?height=600&width=1200&query=racing circuit"}
                             alt={race.circuitName}
                             fill
                             className="object-cover"
@@ -95,7 +59,9 @@ export default async function RacePage({ params }: RacePageProps) {
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-10 h-6 relative overflow-hidden rounded">
                                 <Image
-                                    src={race.location.flagImage || `/placeholder.svg?height=40&width=60`}
+                                    src={
+                                        race.location.flagImage || `/placeholder.svg?height=40&width=60&query=${race.location.country} flag`
+                                    }
                                     alt={race.location.country}
                                     fill
                                     className="object-cover"
@@ -160,5 +126,5 @@ export default async function RacePage({ params }: RacePageProps) {
                 </div>
             </div>
         </div>
-    );
+    )
 }

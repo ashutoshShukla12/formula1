@@ -2,61 +2,59 @@
 Made with ❤️ by Shreyash Raj 
 - Student Number - 8971835
 */
-import NewsHero from "@/components/news/news-hero";
-import NewsList from "@/components/news/news-list";
-import NewsFilters from "@/components/news/news-filters";
-import Navbar from "@/components/navbar";
-import type { Metadata } from "next";
+import NewsHero from "@/components/news/news-hero"
+import NewsList from "@/components/news/news-list"
+import NewsFilters from "@/components/news/news-filters"
+import Navbar from "@/components/navbar"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: "F1 News | Latest Formula 1 Updates and Articles",
     description: "Stay up to date with the latest Formula 1 news, team updates, and driver information.",
-};
+}
 
 export default async function NewsPage({
     searchParams,
 }: {
-    searchParams: { page?: string; teamId?: string; tag?: string }; // Corrected: searchParams is not a Promise
+    searchParams: Promise<{ page?: string; teamId?: string; tag?: string }> // Updated: searchParams is a Promise in Next.js 15
 }) {
-    const page = Number(searchParams.page) || 1;
-    const teamId = searchParams.teamId;
-    const tag = searchParams.tag;
+    const params = await searchParams
+    const page = Number(params.page) || 1
+    const teamId = params.teamId
+    const tag = params.tag
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" // Use absolute URL with fallback
 
     // Fetch featured articles for the hero section
-    const featuredResponse = await fetch(
-        `${baseUrl}/api/news?featured=true&pageSize=3`,
-        { cache: "no-store" }
-    );
-    const featuredData = await featuredResponse.json();
-    const featuredArticles = featuredData.articles;
+    const featuredResponse = await fetch(`${baseUrl}/api/news?featured=true&pageSize=3`, { cache: "no-store" })
+    const featuredData = await featuredResponse.json()
+    const featuredArticles = featuredData.articles
 
     // Fetch all articles with pagination and filters
-    let apiUrl = `${baseUrl}/api/news?page=${page}&pageSize=6`;
+    let apiUrl = `${baseUrl}/api/news?page=${page}&pageSize=6`
 
     if (teamId) {
-        apiUrl += `&teamId=${teamId}`;
+        apiUrl += `&teamId=${teamId}`
     }
 
     if (tag) {
-        apiUrl += `&tag=${tag}`;
+        apiUrl += `&tag=${tag}`
     }
 
-    const articlesResponse = await fetch(apiUrl, { cache: "no-store" });
-    const articlesData = await articlesResponse.json();
+    const articlesResponse = await fetch(apiUrl, { cache: "no-store" })
+    const articlesData = await articlesResponse.json()
 
     // Fetch all tags for filtering
     const tagsResponse = await fetch(`${baseUrl}/api/news/tags`, {
         cache: "no-store",
-    });
-    const tagsData = await tagsResponse.json();
+    })
+    const tagsData = await tagsResponse.json()
 
     // Fetch all teams for filtering
     const teamsResponse = await fetch(`${baseUrl}/api/teams`, {
         cache: "no-store",
-    });
-    const teams = await teamsResponse.json();
+    })
+    const teams = await teamsResponse.json()
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -70,12 +68,7 @@ export default async function NewsPage({
                     <div className="flex flex-col lg:flex-row gap-8">
                         {/* Sidebar with filters */}
                         <div className="lg:w-1/4">
-                            <NewsFilters
-                                tags={tagsData.tags}
-                                teams={teams}
-                                selectedTeam={teamId}
-                                selectedTag={tag}
-                            />
+                            <NewsFilters tags={tagsData.tags} teams={teams} selectedTeam={teamId} selectedTag={tag} />
                         </div>
 
                         {/* Main content with article list */}
@@ -90,5 +83,5 @@ export default async function NewsPage({
                 </div>
             </div>
         </div>
-    );
+    )
 }

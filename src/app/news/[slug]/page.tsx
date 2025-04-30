@@ -2,38 +2,38 @@
 Made with ❤️ by Shreyash Raj 
 - Student Number - 8971835
 */
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
-import Navbar from "@/components/navbar";
-import RelatedArticles from "@/components/news/related-articles";
-import { formatDate } from "@/lib/utils";
-import type { Metadata } from "next";
-import type { NewsArticle } from "@/types/types";
+import { notFound } from "next/navigation"
+import Image from "next/image"
+import Link from "next/link"
+import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
+import Navbar from "@/components/navbar"
+import RelatedArticles from "@/components/news/related-articles"
+import { formatDate } from "@/lib/utils"
+import type { NewsArticle } from "@/types/types"
+import type { Metadata } from "next"
 
 interface ArticlePageProps {
-    params: { slug: string }; // Corrected: params is not a Promise
+    params: Promise<{ slug: string }> // Updated: params is a Promise in Next.js 15
 }
 
 // Generate metadata for the article
-export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-    const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Use absolute URL
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" // Use absolute URL with fallback
         const response = await fetch(`${baseUrl}/api/news/${slug}`, {
             cache: "no-store",
-        });
+        })
 
         if (!response.ok) {
             return {
                 title: "Article Not Found",
                 description: "The requested article could not be found.",
-            };
+            }
         }
 
-        const article: NewsArticle = await response.json();
+        const article: NewsArticle = await response.json()
 
         return {
             title: `${article.title} | F1 News`,
@@ -41,40 +41,37 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
             openGraph: {
                 images: [article.coverImage],
             },
-        };
+        }
     } catch (error) {
         return {
             title: "Article | F1 News",
             description: error instanceof Error ? error.message : "An error occurred while fetching the article.",
-        };
+        }
     }
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-    const { slug } = params;
+    const { slug } = await params
 
     // Fetch the article data
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Use absolute URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" // Use absolute URL with fallback
     const response = await fetch(`${baseUrl}/api/news/${slug}`, {
         cache: "no-store",
-    });
+    })
 
     if (!response.ok) {
-        notFound();
+        notFound()
     }
 
-    const article: NewsArticle = await response.json();
+    const article: NewsArticle = await response.json()
 
     // Fetch related articles based on the same teams
-    const teamId = article.relatedTeams[0];
-    const relatedResponse = await fetch(
-        `${baseUrl}/api/news?teamId=${teamId}&pageSize=3`,
-        { cache: "no-store" }
-    );
-    const relatedData = await relatedResponse.json();
+    const teamId = article.relatedTeams[0]
+    const relatedResponse = await fetch(`${baseUrl}/api/news?teamId=${teamId}&pageSize=3`, { cache: "no-store" })
+    const relatedData = await relatedResponse.json()
 
     // Filter out the current article from related articles
-    const relatedArticles = relatedData.articles.filter((related: NewsArticle) => related.id !== article.id);
+    const relatedArticles = relatedData.articles.filter((related: NewsArticle) => related.id !== article.id)
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -133,7 +130,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     {/* Cover image */}
                     <div className="relative w-full h-[40vh] md:h-[50vh] mb-8 rounded-xl overflow-hidden">
                         <Image
-                            src={article.coverImage || "/placeholder.svg?height=600&width=1200"}
+                            src={article.coverImage || "/placeholder.svg?height=600&width=1200&query=formula 1 racing news"}
                             alt={article.title}
                             fill
                             className="object-cover"
@@ -152,7 +149,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         <div className="flex items-center gap-4">
                             {article.author.avatar && (
                                 <Image
-                                    src={article.author.avatar || "/placeholder.svg?height=80&width=80"}
+                                    src={article.author.avatar || "/placeholder.svg?height=80&width=80&query=person portrait"}
                                     alt={article.author.name}
                                     width={60}
                                     height={60}
@@ -176,5 +173,5 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 )}
             </div>
         </div>
-    );
+    )
 }
